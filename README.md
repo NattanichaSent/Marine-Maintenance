@@ -25,3 +25,18 @@ CLI : npm install tailwindcss @tailwindcss/vite
 By : npm
 Link : https://tailwindcss.com/docs/installation/using-vite
 Description : CSS Framework
+
+CLI : npm install @ant-design/v5-patch-for-react-19 --save
+By : npm
+Link : https://ant.design/docs/react/introduce
+Description : Ant Design library
+
+CLI : npm install apexcharts react-apexcharts
+By : npm
+Link : https://apexcharts.com/docs/installation/
+Description : apexcharts library
+
+CLI : npm install react-highlight-words
+By : npm
+Link : https://apexcharts.com/docs/installation/
+Description : highlight words in tables
