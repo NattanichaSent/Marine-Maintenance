@@ -1,27 +1,64 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ApexCharts from 'apexcharts';
 import fuelData from '../data/fuelData';
 
-const BarChart = () => {
-    const [selectedBoat, setSelectedBoat] = useState(fuelData[0]);
+const BarChart = ({ boatId }) => {
     const chartRef = useRef(null);
 
     useEffect(() => {
+        const selectedBoat = fuelData.find(b => b.Id.toString() === boatId.toString());
 
-        const seriesData = [
-            { name: 'ShipLoaded', data: [] },
-            { name: 'ShipLight', data: [] },
-            { name: 'ShipEmpty', data: [] },
-            { name: 'ShipOthers', data: [] }
-        ];
+        if (!selectedBoat || !selectedBoat.FuelActivity) return;
+
+        const shipLoadedData = [];
+        const shipLightData = [];
+        const shipEmptyData = [];
+        const shipOthersData = [];
 
         selectedBoat.FuelActivity.forEach((activity) => {
-            seriesData[0].data.push(activity.ShipLoaded);
-            seriesData[1].data.push(activity.ShipLight);
-            seriesData[2].data.push(activity.ShipEmpty);
-            seriesData[3].data.push(activity.ShipOthers);
+            shipLoadedData.push({
+                x: activity.FocusDate,
+                y: activity.ShipLoaded,
+                goals: [
+                    {
+                        name: 'เป้าหมาย',
+                        value: activity.STDLoaded,
+                        strokeHeight: 4,
+                        strokeColor: '#986DE1'
+                    }
+                ]
+            });
+
+            shipLightData.push({
+                x: activity.FocusDate,
+                y: activity.ShipLight,
+                goals: [
+                    {
+                        name: 'เป้าหมาย',
+                        value: activity.STDLight,
+                        strokeHeight: 4,
+                        strokeColor: '#E16D7C'
+                    }
+                ]
+            });
+
+            shipEmptyData.push({
+                x: activity.FocusDate,
+                y: activity.ShipEmpty
+            });
+
+            shipOthersData.push({
+                x: activity.FocusDate,
+                y: activity.ShipOthers
+            });
         });
 
+        const seriesData = [
+            { name: 'หนัก', data: shipLoadedData },
+            { name: 'เบา', data: shipLightData },
+            { name: 'ตัวเปล่า', data: shipEmptyData },
+            { name: 'อื่น ๆ', data: shipOthersData }
+        ];
 
         const options = {
             series: seriesData,
@@ -34,19 +71,22 @@ const BarChart = () => {
                 bar: {
                     columnWidth: '60%',
                     horizontal: false,
-                    columnSpacing: 12,
                 },
             },
-            colors: ['#006A71', '#25FFC6', '#B8B8B8', '#FF5884'],
+            colors: ['#6DE1D2', '#FFD63A', '#FFA955', '#F75A5A'],
             dataLabels: {
                 enabled: false,
             },
             legend: {
                 show: true,
-                customLegendItems: ['ShipLoaded', 'ShipLight', 'ShipEmpty', 'ShipOthers'],
+                customLegendItems: ['หนัก', 'เบา', 'ตัวเปล่า', 'อื่น ๆ'],
                 markers: {
-                    fillColors: ['#006A71', '#25FFC6', '#B8B8B8', '#FF5884'],
+                    shape: 'circle',  // เปลี่ยนให้เป็นวงกลม
+                    width: 14,  // ขนาดวงกลม
+                    height: 14, // ขนาดวงกลม
+
                 },
+                fontSize: '14px',
             },
             xaxis: {
                 categories: selectedBoat.FuelActivity.map((activity) => activity.FocusDate),
@@ -54,6 +94,13 @@ const BarChart = () => {
             yaxis: {
                 title: {
                     text: 'ปริมาณน้ำมัน',
+                },
+            },
+            tooltip: {
+                shared: false,  // จะใช้แสดงข้อมูลเฉพาะแท่งที่ชี้
+                intersect: true, // ทำให้ tooltip แสดงข้อมูลของแท่งที่ชี้
+                y: {
+                    formatter: (value) => `${value} ลิตร`,  // กำหนดรูปแบบของข้อมูล
                 },
             },
         };
@@ -64,30 +111,11 @@ const BarChart = () => {
         return () => {
             chart.destroy();
         };
-    }, [selectedBoat]);
+    }, [boatId]);
 
     return (
         <div className="w-full p-4 bg-white rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold text-center mb-4">Bar Chart</h2>
-
-
-            <div className="mb-4 text-center">
-                <select
-                    value={selectedBoat.Id}
-                    onChange={(e) => {
-                        const selected = fuelData.find(boat => boat.Id === parseInt(e.target.value));
-                        setSelectedBoat(selected);
-                    }}
-                    className="p-2 border border-gray-300 rounded"
-                >
-                    {fuelData.map((boat) => (
-                        <option key={boat.Id} value={boat.Id}>
-                            {boat.Name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
+            <h2 className="text-xl font-semibold text-center mb-4">ปริมาณน้ำมันรายกิจกรรม</h2>
             <div id="chart" ref={chartRef}></div>
         </div>
     );

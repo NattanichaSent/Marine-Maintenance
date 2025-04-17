@@ -1,7 +1,13 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const LineChart = ({ FocusDate = [], inData = [], remainData = [], outData = [] }) => {
+const LineChart = ({
+    FocusDate = [],
+    inData = [],
+    remainData = [],
+    outData = [],
+    fuelConsumption = [],
+}) => {
     const options = {
         chart: {
             id: 'line-chart',
@@ -10,43 +16,79 @@ const LineChart = ({ FocusDate = [], inData = [], remainData = [], outData = [] 
         },
         xaxis: {
             categories: FocusDate,
-            title: { style: { fontSize: '14px' } }
+            title: { style: { fontSize: '14px' } },
         },
         stroke: { curve: 'smooth' },
         markers: {
             size: 5,
             strokeWidth: 2,
         },
-        colors: ['#25FFC6', '#FF1654', '#006A71'],
+        colors: ['#6DE1D2', '#FFD63A', '#FFA955', '#F75A5A'],
         dataLabels: {
             enabled: false,
         },
         tooltip: {
             x: {
-                format: 'yyyy-MM-dd'
-            }
+                format: 'yyyy-MM-dd',
+            },
         },
         legend: {
             position: 'bottom',
             horizontalAlign: 'center',
             fontSize: '14px',
-        }
+        },
     };
 
-    const series = [
-        { name: 'รับเข้า', data: inData },
-        { name: 'จ่ายออก', data: outData },
-        { name: 'คงเหลือ', data: remainData },
-    ];
+    // เริ่มต้นด้วยข้อมูลเบื้องต้นที่มีอยู่
+    const series = [];
+
+    // ตรวจสอบและเพิ่มข้อมูลจาก inData, remainData, outData ถ้ามี
+    if (inData.length > 0) {
+        series.push({ name: 'รับเข้า', data: inData });
+    }
+
+    if (outData.length > 0) {
+        series.push({ name: 'จ่ายออก', data: outData });
+    }
+
+    if (remainData.length > 0) {
+        series.push({ name: 'คงเหลือ', data: remainData });
+    }
+
+    // ตรวจสอบและเพิ่มข้อมูลจาก fuelConsumption ถ้ามี
+    if (fuelConsumption.length > 0) {
+        if (fuelConsumption.some(f => f.ShipLoaded !== undefined)) {
+            series.push({
+                name: 'เรือหนัก', // ShipLoaded
+                data: fuelConsumption.map(f => f.ShipLoaded),
+            });
+        }
+
+        if (fuelConsumption.some(f => f.ShipLight !== undefined)) {
+            series.push({
+                name: 'เรือเบา', // ShipLight
+                data: fuelConsumption.map(f => f.ShipLight),
+            });
+        }
+
+        if (fuelConsumption.some(f => f.ShipEmpty !== undefined)) {
+            series.push({
+                name: 'วิ่งตัวเปล่า', // ShipEmpty
+                data: fuelConsumption.map(f => f.ShipEmpty),
+            });
+        }
+    }
 
     return (
-        <div className="overflow-x-auto">
-            <div
-                className="bg-white p-6 rounded-lg shadow w-full"
-
-            >
+        <div className="overflow-x-auto shadow-lg rounded-xl">
+            <div className="bg-white p-6 rounded-xl  w-full ">
                 <h2 className="text-xl font-medium mb-4">ปริมาณน้ำมันของเรือ</h2>
-                <ReactApexChart options={options} series={series} type="line" height={350} />
+                <ReactApexChart
+                    options={options}
+                    series={series}
+                    type="line"
+                    height={350}
+                />
             </div>
         </div>
     );

@@ -29,6 +29,7 @@ function FuelDashboard() {
         const inData = boat?.FuelVolume.map(fv => fv.FuelRefuel) || [];
         const remainData = boat?.FuelVolume.map(fv => fv.FuelRemaining) || [];
         const outData = boat?.FuelVolume.map(fv => fv.FuelDrain) || [];
+        const fuelConsumption = boat?.FuelConsumption || [];
 
         return {
             id: boatId,
@@ -37,6 +38,7 @@ function FuelDashboard() {
             inData,
             remainData,
             outData,
+            fuelConsumption,
         };
     });
 
@@ -93,6 +95,10 @@ function FuelDashboard() {
                                     />
                                     <FuelTable boatId={selectedBoats[0]} />
                                     <BarChart boatId={selectedBoats[0]} />
+                                    <LineChart
+                                        FocusDate={selectedBoatsData[0].FocusDate}
+                                        fuelConsumption={selectedBoatsData[0].fuelConsumption}
+                                    />
                                 </div>
                             ) : (
                                 <div className="overflow-x-auto w-full">
@@ -111,7 +117,10 @@ function FuelDashboard() {
                                                 />
                                                 <FuelTable boatId={boat.id} />
                                                 <BarChart boatId={boat.id} />
-
+                                                <LineChart
+                                                    FocusDate={boat.FocusDate}
+                                                    fuelConsumption={boat.fuelConsumption}
+                                                />
                                             </div>
                                         ))}
                                     </div>

@@ -132,7 +132,7 @@ const FuelTable = ({ boatId }) => {
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow overflow-x-auto">
+    <div className="bg-white rounded-xl shadow-lg overflow-x-auto">
       <Table
         className="custom-table"
         columns={columns}

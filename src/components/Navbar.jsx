@@ -121,7 +121,7 @@ const Navbar = ({ children }) => {
                         background: colorBgContainer,
                     }}
                 >
-                    <div className='flex items-center justify-between'>
+                    <div className='flex items-center justify-between shadow-lg'>
                         <div className='flex'>
                             <Button
                                 type="text"
@@ -144,7 +144,7 @@ const Navbar = ({ children }) => {
                             ) : null}
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <p style={{ margin: 0, lineHeight: '20px' }}>Alexandra Kang</p>
-                                <p style={{ margin: 0, lineHeight: '20px' }}>Admin</p>
+                                <p style={{ margin: 0, lineHeight: '12px' }} className='text-[12px] text-[#009AA4]'>Admin</p>
                             </div>
                         </div>
 
