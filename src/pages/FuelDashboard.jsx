@@ -1,21 +1,50 @@
-import React, { useState } from "react";
+import dayjs from "dayjs";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { Layout, theme } from "antd";
+import { DatePicker, Layout, theme } from "antd";
 import LineChart from "../components/LineChart";
 import BoatFilter from "../components/BoatFilter";
-import fuelData from "../data/fuelData";
+
 import FuelTable from "../components/FuelTable";
 import BarChart from "../components/ฺBarChart";
 import { ConfigProvider } from "antd";
-import { formatDate } from "../utils/FormatDate";
+import { formatDate, formatMonthYear } from "../utils/FormatDate";
+import { getFuelData } from "../services/Api";
 
 const { Content } = Layout;
 
 function FuelDashboard() {
-  const [selectedBoats, setSelectedBoats] = useState(["1"]);
+  const [selectedBoats, setSelectedBoats] = useState([]);
+  const [fuelData, setFuelData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [selectedMonth, setSelectedMonth] = useState(dayjs());
+
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
+  useEffect(() => {
+    const fetchFuelData = async () => {
+      const formattedDate = formatMonthYear(selectedMonth);
+      try {
+        const response = await getFuelData(formattedDate);
+        if (response.status === 200) {
+          setFuelData(response.data);
+          if (response.data.length > 0) {
+            setSelectedBoats([response.data[0].id.toString()]);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching fuel data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFuelData();
+  }, [selectedMonth]);
+
+  if (loading) return <div>Loading fuel data...</div>;
 
   const handleBoatSelectionChange = (newSelectedBoats) => {
     if (newSelectedBoats.length <= 2) {
@@ -24,7 +53,7 @@ function FuelDashboard() {
   };
 
   const selectedBoatsData = selectedBoats.map((boatId) => {
-    const boat = fuelData.find((b) => b?.id.toString() === boatId);
+    const boat = fuelData.find((b) => b?.id?.toString() === boatId);
 
     const FocusDate =
       boat?.fuelVolume.map((fv) => formatDate(fv.focusDate)) || [];
@@ -76,6 +105,9 @@ function FuelDashboard() {
             borderColor: "#e0e0e0",
             colorText: "#333",
           },
+          DatePicker: {
+            colorBgContainer: "white",
+          },
         },
       }}
     >
@@ -84,11 +116,24 @@ function FuelDashboard() {
           <div className="space-y-5">
             <div className="flex justify-between">
               <h1 className="font-medium">TLT Dashboard</h1>
-              <BoatFilter
-                selectedBoats={selectedBoats}
-                onChange={handleBoatSelectionChange}
-                selectedBoatsNames={selectedBoatsNames}
-              />
+              <div className="flex items-center gap-5">
+                <DatePicker
+                  picker="month"
+                  value={selectedMonth}
+                  onChange={(date) => {
+                    if (date) setLoading(true);
+                    setSelectedMonth(date);
+                  }}
+                  format="MMMM YYYY"
+                />
+
+                <BoatFilter
+                  boats={fuelData}
+                  selectedBoats={selectedBoats}
+                  onChange={handleBoatSelectionChange}
+                  selectedBoatsNames={selectedBoatsNames}
+                />
+              </div>
             </div>
 
             <div>
@@ -103,8 +148,8 @@ function FuelDashboard() {
                     usageData={selectedBoatsData[0].usageData}
                     usageScaleData={selectedBoatsData[0].usageScaleData}
                   />
-                  <FuelTable boatId={selectedBoats[0]} />
-                  <BarChart boatId={selectedBoats[0]} />
+                  <FuelTable boatId={selectedBoats[0]} boats={fuelData} />
+                  <BarChart boatId={selectedBoats[0]} boats={fuelData} />
                   <LineChart
                     FocusDate={selectedBoatsData[0].FocusDate}
                     fuelConsumption={selectedBoatsData[0].fuelConsumption}

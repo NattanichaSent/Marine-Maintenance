@@ -2,18 +2,22 @@ import React, { useEffect, useRef } from "react";
 import ApexCharts from "apexcharts";
 import { formatDate } from "../utils/FormatDate";
 
-const BarChart = ({ fuelActivity }) => {
+const BarChart = ({ boatId, boats }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    if (!fuelActivity || fuelActivity.length === 0) return;
+    const selectedBoat = boats.find(
+      (b) => b.id.toString() === boatId.toString()
+    );
+
+    if (!selectedBoat || !selectedBoat.fuelActivity) return;
 
     const shipLoadedData = [];
     const shipLightData = [];
     const shipEmptyData = [];
     const shipOthersData = [];
 
-    fuelActivity.forEach((activity) => {
+    selectedBoat.fuelActivity.forEach((activity) => {
       shipLoadedData.push({
         x: formatDate(activity.focusDate),
         y: activity.shipLoaded,

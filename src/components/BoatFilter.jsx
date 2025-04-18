@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Checkbox, Button, Divider } from "antd";
-import fuelData from "../data/fuelData";
 
-const BoatFilter = ({ selectedBoats, onChange }) => {
+const BoatFilter = ({ boats, selectedBoats, onChange }) => {
   const [open, setOpen] = useState(false);
 
   const options =
-    fuelData &&
-    fuelData.map((boat) => ({
+    boats &&
+    boats.map((boat) => ({
       label: boat.name,
       value: boat.id.toString(),
     }));
