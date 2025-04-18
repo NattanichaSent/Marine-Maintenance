@@ -1,10 +1,9 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import { DatePicker, Layout, theme } from "antd";
+import { DatePicker, Layout, theme, Spin } from "antd";
 import LineChart from "../components/LineChart";
 import BoatFilter from "../components/BoatFilter";
-
 import FuelTable from "../components/FuelTable";
 import BarChart from "../components/ฺBarChart";
 import { ConfigProvider } from "antd";
@@ -17,15 +16,17 @@ function FuelDashboard() {
   const [selectedBoats, setSelectedBoats] = useState([]);
   const [fuelData, setFuelData] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
 
   const {
     token: { borderRadiusLG },
   } = theme.useToken();
+
   useEffect(() => {
     const fetchFuelData = async () => {
       const formattedDate = formatMonthYear(selectedMonth);
+      setLoading(true);
+
       try {
         const response = await getFuelData(formattedDate);
         if (response.status === 200) {
@@ -44,8 +45,6 @@ function FuelDashboard() {
     fetchFuelData();
   }, [selectedMonth]);
 
-  if (loading) return <div>Loading fuel data...</div>;
-
   const handleBoatSelectionChange = (newSelectedBoats) => {
     if (newSelectedBoats.length <= 2) {
       setSelectedBoats(newSelectedBoats);
@@ -54,7 +53,6 @@ function FuelDashboard() {
 
   const selectedBoatsData = selectedBoats.map((boatId) => {
     const boat = fuelData.find((b) => b?.id?.toString() === boatId);
-
     const FocusDate =
       boat?.fuelVolume.map((fv) => formatDate(fv.focusDate)) || [];
     const inData = boat?.fuelVolume.map((fv) => fv.fuelRefuel) || [];
@@ -106,7 +104,10 @@ function FuelDashboard() {
             colorText: "#333",
           },
           DatePicker: {
-            colorBgContainer: "white",
+            colorPrimary: "#006A71", // เปลี่ยนสีปุ่มเลือก (primary)
+            colorBgContainer: "#ffffff", // พื้นหลัง datepicker
+            colorTextPlaceholder: "#006A71", // สี 
+
           },
         },
       }}
@@ -121,12 +122,12 @@ function FuelDashboard() {
                   picker="month"
                   value={selectedMonth}
                   onChange={(date) => {
-                    if (date) setLoading(true);
-                    setSelectedMonth(date);
+                    if (date) {
+                      setSelectedMonth(date);
+                    }
                   }}
                   format="MMMM YYYY"
                 />
-
                 <BoatFilter
                   boats={fuelData}
                   selectedBoats={selectedBoats}
@@ -136,54 +137,63 @@ function FuelDashboard() {
               </div>
             </div>
 
-            <div>
-              {selectedBoats.length === 1 ? (
-                <div className="flex flex-col space-y-5 w-full">
-                  <h2>🚤 {selectedBoatsData[0].name}</h2>
-                  <LineChart
-                    FocusDate={selectedBoatsData[0].FocusDate}
-                    inData={selectedBoatsData[0].inData}
-                    remainData={selectedBoatsData[0].remainData}
-                    outData={selectedBoatsData[0].outData}
-                    usageData={selectedBoatsData[0].usageData}
-                    usageScaleData={selectedBoatsData[0].usageScaleData}
-                  />
-                  <FuelTable boatId={selectedBoats[0]} boats={fuelData} />
-                  <BarChart boatId={selectedBoats[0]} boats={fuelData} />
-                  <LineChart
-                    FocusDate={selectedBoatsData[0].FocusDate}
-                    fuelConsumption={selectedBoatsData[0].fuelConsumption}
-                  />
-                </div>
-              ) : (
-                <div className="overflow-x-auto w-full">
-                  <div className="flex w-full justify-between space-x-5">
-                    {selectedBoatsData.map((boat, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col w-full md:w-[calc(50%-10px)] space-y-5"
-                      >
-                        <h2 className="items-end">🚢 {boat.name}</h2>
-                        <LineChart
-                          FocusDate={boat.FocusDate}
-                          inData={boat.inData}
-                          remainData={boat.remainData}
-                          outData={boat.outData}
-                          usageData={boat.usageData}
-                          usageScaleData={boat.usageScaleData}
-                        />
-                        <FuelTable boatId={boat.id} />
-                        <BarChart boatId={boat.id} />
-                        <LineChart
-                          FocusDate={boat.FocusDate}
-                          fuelConsumption={boat.fuelConsumption}
-                        />
-                      </div>
-                    ))}
+
+            <Spin spinning={loading} tip="กำลังโหลดข้อมูล..." style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '100%',
+              fontFamily: 'Kanit, sans-serif'
+            }}>
+              <div>
+                {selectedBoats.length === 1 ? (
+                  <div className="flex flex-col space-y-5 w-full">
+                    <h2>🚤 {selectedBoatsData[0].name}</h2>
+                    <LineChart
+                      FocusDate={selectedBoatsData[0].FocusDate}
+                      inData={selectedBoatsData[0].inData}
+                      remainData={selectedBoatsData[0].remainData}
+                      outData={selectedBoatsData[0].outData}
+                      usageData={selectedBoatsData[0].usageData}
+                      usageScaleData={selectedBoatsData[0].usageScaleData}
+                    />
+                    <FuelTable boatId={selectedBoats[0]} boats={fuelData} />
+                    <BarChart boatId={selectedBoats[0]} boats={fuelData} />
+                    <LineChart
+                      FocusDate={selectedBoatsData[0].FocusDate}
+                      fuelConsumption={selectedBoatsData[0].fuelConsumption}
+                    />
                   </div>
-                </div>
-              )}
-            </div>
+                ) : (
+                  <div className="overflow-x-auto w-full">
+                    <div className="flex w-full justify-between space-x-5 ">
+                      {selectedBoatsData?.map((boat, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-col w-full md:w-[calc(50%-10px)] space-y-5 "
+                        >
+                          <h2 className="items-end">🚢 {boat.name}</h2>
+                          <LineChart
+                            FocusDate={boat.FocusDate}
+                            inData={boat.inData}
+                            remainData={boat.remainData}
+                            outData={boat.outData}
+                            usageData={boat.usageData}
+                            usageScaleData={boat.usageScaleData}
+                          />
+                          <FuelTable boatId={boat.id} boats={fuelData} />
+                          <BarChart boatId={boat.id} boats={fuelData} />
+                          <LineChart
+                            FocusDate={boat.FocusDate}
+                            fuelConsumption={boat.fuelConsumption}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </Spin>
           </div>
         </Content>
       </Navbar>

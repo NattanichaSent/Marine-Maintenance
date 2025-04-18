@@ -94,16 +94,18 @@ const FuelTable = ({ boatId, boats }) => {
       ),
   });
 
-  const boat = boats.find((item) => item?.id.toString() === boatId?.toString());
+  const boat = boats?.find((item) => item?.id.toString() === boatId?.toString());
 
   if (!boat) return <div>No data available</div>;
 
-  const tableData = boat?.fuelVolume.map((entry, index) => ({
+  const tableData = boat?.fuelVolume?.map((entry, index) => ({
     key: index,
     date: formatDate(entry?.focusDate),
     in: entry?.fuelRefuel,
     out: entry?.fuelDrain,
     remain: entry?.fuelRemaining,
+    usageData: entry?.fuelUsage,
+    usageScaleData: entry?.fuelUsageScale,
   }));
 
   const columns = [
@@ -124,13 +126,29 @@ const FuelTable = ({ boatId, boats }) => {
       ...getColumnSearchProps("in"),
       sorter: (a, b) => a.in - b.in,
     },
+    // {
+    //   title: "จ่ายออก",
+    //   dataIndex: "out",
+    //   key: "out",
+    //   width: "20%",
+    //   ...getColumnSearchProps("out"),
+    //   sorter: (a, b) => a.out - b.out,
+    // },
     {
-      title: "จ่ายออก",
-      dataIndex: "out",
-      key: "out",
+      title: "น้ำมันใช้ไป (บันทึก)",
+      dataIndex: "usageData",
+      key: "usageData",
       width: "20%",
-      ...getColumnSearchProps("out"),
-      sorter: (a, b) => a.out - b.out,
+      ...getColumnSearchProps("usageData"),
+      sorter: (a, b) => a.usageData - b.usageData,
+    },
+    {
+      title: "น้ำมันใช้ไป (สเกล)",
+      dataIndex: "usageScaleData",
+      key: "usageScaleData",
+      width: "20%",
+      ...getColumnSearchProps("usageScaleData"),
+      sorter: (a, b) => a.usageScaleData - b.outusageScaleData,
     },
     {
       title: "คงเหลือ",

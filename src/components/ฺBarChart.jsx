@@ -5,11 +5,11 @@ import { formatDate } from "../utils/FormatDate";
 const BarChart = ({ boatId, boats }) => {
   const chartRef = useRef(null);
 
-  useEffect(() => {
-    const selectedBoat = boats.find(
-      (b) => b.id.toString() === boatId.toString()
-    );
+  const selectedBoat = boats?.find(
+    (b) => b.id.toString() === boatId.toString()
+  );
 
+  useEffect(() => {
     if (!selectedBoat || !selectedBoat.fuelActivity) return;
 
     const shipLoadedData = [];
@@ -18,39 +18,21 @@ const BarChart = ({ boatId, boats }) => {
     const shipOthersData = [];
 
     selectedBoat.fuelActivity.forEach((activity) => {
+      const date = formatDate(activity.focusDate);
       shipLoadedData.push({
-        x: formatDate(activity.focusDate),
+        x: date,
         y: activity.shipLoaded,
-        goals: [
-          {
-            name: "เป้าหมาย",
-            value: activity.stdLoaded,
-            strokeHeight: 4,
-            strokeColor: "#986DE1",
-          },
-        ],
       });
-
       shipLightData.push({
-        x: formatDate(activity.focusDate),
+        x: date,
         y: activity.shipLight,
-        goals: [
-          {
-            name: "เป้าหมาย",
-            value: activity.stdLight,
-            strokeHeight: 4,
-            strokeColor: "#E16D7C",
-          },
-        ],
       });
-
       shipEmptyData.push({
-        x: formatDate(activity.focusDate),
+        x: date,
         y: activity.shipEmpty,
       });
-
       shipOthersData.push({
-        x: formatDate(activity.focusDate),
+        x: date,
         y: activity.shipOther,
       });
     });
@@ -80,17 +62,10 @@ const BarChart = ({ boatId, boats }) => {
         enabled: false,
       },
       legend: {
-        show: true,
-        customLegendItems: ["หนัก", "เบา", "ตัวเปล่า", "อื่น ๆ"],
-        markers: {
-          shape: "circle",
-          width: 14,
-          height: 14,
-        },
-        fontSize: "14px",
+        show: false, // ❌ ปิด legend เดิม
       },
       xaxis: {
-        categories: fuelActivity.map((activity) =>
+        categories: selectedBoat.fuelActivity.map((activity) =>
           formatDate(activity.focusDate)
         ),
       },
@@ -114,14 +89,45 @@ const BarChart = ({ boatId, boats }) => {
     return () => {
       chart.destroy();
     };
-  }, [fuelActivity]);
+  }, [selectedBoat]);
+
+  if (!selectedBoat) {
+    return <p className="text-center text-gray-500">ไม่พบข้อมูลเรือ</p>;
+  }
 
   return (
     <div className="w-full p-4 bg-white rounded-lg shadow-lg">
       <h2 className="text-xl font-semibold text-center mb-4">
         ปริมาณน้ำมันรายกิจกรรม
       </h2>
-      <div id="chart" ref={chartRef}></div>
+
+      {/* ✅ กราฟที่ scroll ได้แนวนอน */}
+      <div className="overflow-x-auto pb-2">
+        <div
+          id="chart"
+          ref={chartRef}
+          style={{
+            width: `${selectedBoat.fuelActivity.length * 100}px`,
+            minWidth: "400px",
+          }}
+        />
+      </div>
+
+      {/* ✅ Legend อยู่แยกด้านล่าง ไม่ scroll ไปด้วย */}
+      <div className="flex justify-center flex-wrap gap-4 mt-4 text-sm">
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 rounded-full" style={{ backgroundColor: "#6DE1D2" }}></span> หนัก
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 rounded-full" style={{ backgroundColor: "#FFD63A" }}></span> เบา
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 rounded-full" style={{ backgroundColor: "#FFA955" }}></span> ตัวเปล่า
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-4 h-4 rounded-full" style={{ backgroundColor: "#F75A5A" }}></span> อื่น ๆ
+        </div>
+      </div>
     </div>
   );
 };

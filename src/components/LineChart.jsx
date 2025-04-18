@@ -6,6 +6,8 @@ const LineChart = ({
   inData = [],
   remainData = [],
   outData = [],
+  usageData = [],
+  usageScaleData = [],
   fuelConsumption = [],
 }) => {
   const options = {
@@ -45,8 +47,16 @@ const LineChart = ({
     series.push({ name: "รับเข้า", data: inData });
   }
 
-  if (outData.length > 0) {
-    series.push({ name: "จ่ายออก", data: outData });
+  // if (outData.length > 0) {
+  //   series.push({ name: "จ่ายออก", data: outData });
+  // }
+
+  if (usageData.length > 0) {
+    series.push({ name: "น้ำมันใช้ไป (บันทึก)", data: usageData });
+  }
+
+  if (usageScaleData.length > 0) {
+    series.push({ name: "น้ำมันใช้ไป (สเกล)", data: usageScaleData });
   }
 
   if (remainData.length > 0) {
