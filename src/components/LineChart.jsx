@@ -54,24 +54,24 @@ const LineChart = ({
   }
 
   if (fuelConsumption.length > 0) {
-    if (fuelConsumption.some((f) => f.ShipLoaded !== undefined)) {
+    if (fuelConsumption.some((f) => f.shipLoaded !== undefined)) {
       series.push({
         name: "เรือหนัก",
-        data: fuelConsumption.map((f) => f.ShipLoaded),
+        data: fuelConsumption.map((f) => f.shipLoaded),
       });
     }
 
-    if (fuelConsumption.some((f) => f.ShipLight !== undefined)) {
+    if (fuelConsumption.some((f) => f.shipLight !== undefined)) {
       series.push({
         name: "เรือเบา",
-        data: fuelConsumption.map((f) => f.ShipLight),
+        data: fuelConsumption.map((f) => f.shipLight),
       });
     }
 
-    if (fuelConsumption.some((f) => f.ShipEmpty !== undefined)) {
+    if (fuelConsumption.some((f) => f.shipEmpty !== undefined)) {
       series.push({
         name: "วิ่งตัวเปล่า",
-        data: fuelConsumption.map((f) => f.ShipEmpty),
+        data: fuelConsumption.map((f) => f.shipEmpty),
       });
     }
   }
