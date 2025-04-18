@@ -31,6 +31,8 @@ function FuelDashboard() {
     const inData = boat?.fuelVolume.map((fv) => fv.fuelRefuel) || [];
     const remainData = boat?.fuelVolume.map((fv) => fv.fuelRemaining) || [];
     const outData = boat?.fuelVolume.map((fv) => fv.fuelDrain) || [];
+    const usageData = boat?.fuelVolume.map((fv) => fv.fuelUsage) || [];
+    const usageScaleData = boat?.fuelVolume.map((fv) => fv.fuelUsageScale) || [];
     const fuelConsumption = boat?.fuelConsumption || [];
 
     return {
@@ -40,6 +42,8 @@ function FuelDashboard() {
       inData,
       remainData,
       outData,
+      usageData,
+      usageScaleData,
       fuelConsumption,
     };
   });
@@ -96,6 +100,8 @@ function FuelDashboard() {
                     inData={selectedBoatsData[0].inData}
                     remainData={selectedBoatsData[0].remainData}
                     outData={selectedBoatsData[0].outData}
+                    usageData={selectedBoatsData[0].usageData}
+                    usageScaleData={selectedBoatsData[0].usageScaleData}
                   />
                   <FuelTable boatId={selectedBoats[0]} />
                   <BarChart boatId={selectedBoats[0]} />
@@ -118,6 +124,8 @@ function FuelDashboard() {
                           inData={boat.inData}
                           remainData={boat.remainData}
                           outData={boat.outData}
+                          usageData={boat.usageData}
+                          usageScaleData={boat.usageScaleData}
                         />
                         <FuelTable boatId={boat.id} />
                         <BarChart boatId={boat.id} />

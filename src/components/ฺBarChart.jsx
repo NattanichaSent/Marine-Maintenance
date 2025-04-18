@@ -1,24 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import ApexCharts from "apexcharts";
-import fuelData from "../data/fuelData";
 import { formatDate } from "../utils/FormatDate";
 
-const BarChart = ({ boatId }) => {
+const BarChart = ({ fuelActivity }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    const selectedBoat = fuelData.find(
-      (b) => b.id.toString() === boatId.toString()
-    );
-
-    if (!selectedBoat || !selectedBoat.fuelActivity) return;
+    if (!fuelActivity || fuelActivity.length === 0) return;
 
     const shipLoadedData = [];
     const shipLightData = [];
     const shipEmptyData = [];
     const shipOthersData = [];
 
-    selectedBoat.fuelActivity.forEach((activity) => {
+    fuelActivity.forEach((activity) => {
       shipLoadedData.push({
         x: formatDate(activity.focusDate),
         y: activity.shipLoaded,
@@ -91,7 +86,7 @@ const BarChart = ({ boatId }) => {
         fontSize: "14px",
       },
       xaxis: {
-        categories: selectedBoat.fuelActivity.map((activity) =>
+        categories: fuelActivity.map((activity) =>
           formatDate(activity.focusDate)
         ),
       },
@@ -115,7 +110,7 @@ const BarChart = ({ boatId }) => {
     return () => {
       chart.destroy();
     };
-  }, [boatId]);
+  }, [fuelActivity]);
 
   return (
     <div className="w-full p-4 bg-white rounded-lg shadow-lg">

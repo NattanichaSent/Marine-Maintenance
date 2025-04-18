@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
-    UploadOutlined,
     UserOutlined,
-    VideoCameraOutlined,
     LineChartOutlined,
     AppstoreOutlined,
     LogoutOutlined,
@@ -12,7 +10,7 @@ import {
     DotChartOutlined
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
-import { Avatar, Space } from 'antd';
+import { Avatar } from 'antd';
 
 
 const { Header, Sider, Content } = Layout;
@@ -136,8 +134,6 @@ const Navbar = ({ children }) => {
                             <p>Marine Logo</p>
                         </div>
                         <div className='flex items-center gap-x-3 mr-5'>
-
-                            {/* ซ่อนข้อมูลเมื่อ Sidebar ถูกเปิด (collapsed) และเป็นหน้าจอ sm */}
                             {!collapsed || !isMobile ? (
                                 <Avatar style={{ backgroundColor: '#9ACBD0', color: '#006A71' }} className='font-bold'>A</Avatar>
 
