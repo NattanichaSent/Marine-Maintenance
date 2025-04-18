@@ -1,12 +1,13 @@
-import React, { useRef, useState } from 'react';
-import { SearchOutlined } from '@ant-design/icons';
-import { Button, Input, Space, Table } from 'antd';
-import Highlighter from 'react-highlight-words';
-import fuelData from '../data/fuelData';
+import React, { useRef, useState } from "react";
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, Input, Space, Table } from "antd";
+import Highlighter from "react-highlight-words";
+import fuelData from "../data/fuelData";
+import { formatDate } from "../utils/FormatDate";
 
 const FuelTable = ({ boatId }) => {
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -15,19 +16,27 @@ const FuelTable = ({ boatId }) => {
     setSearchedColumn(dataIndex);
   };
 
-  const handleReset = clearFilters => {
+  const handleReset = (clearFilters) => {
     clearFilters();
-    setSearchText('');
+    setSearchText("");
   };
 
-  const getColumnSearchProps = dataIndex => ({
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-      <div className="p-2 w-[280px]" onKeyDown={e => e.stopPropagation()}>
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div className="p-2 w-[280px]" onKeyDown={(e) => e.stopPropagation()}>
         <Input
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
           className="block"
         />
@@ -50,14 +59,17 @@ const FuelTable = ({ boatId }) => {
               Clear
             </Button>
           </div>
-          <button className='text-[#006a71]  px-1 font-semibold hover:text-[#009AA4]' onClick={close}>
+          <button
+            className="text-[#006a71]  px-1 font-semibold hover:text-[#009AA4]"
+            onClick={close}
+          >
             Close
           </button>
         </Space>
       </div>
     ),
-    filterIcon: filtered => (
-      <SearchOutlined className={filtered ? 'text-blue-600' : ''} />
+    filterIcon: (filtered) => (
+      <SearchOutlined className={filtered ? "text-blue-600" : ""} />
     ),
     onFilter: (value, record) =>
       record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
@@ -70,69 +82,71 @@ const FuelTable = ({ boatId }) => {
         }
       },
     },
-    render: text =>
+    render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: '#006a71', padding: 0 }}
+          highlightStyle={{ backgroundColor: "#006a71", padding: 0 }}
           searchWords={[searchText]}
           autoEscape
-          textToHighlight={text ? text.toString() : ''}
+          textToHighlight={text ? text.toString() : ""}
         />
       ) : (
         text
       ),
   });
 
-  const boat = fuelData.find(item => item.Id.toString() === boatId.toString());
+  const boat = fuelData.find(
+    (item) => item?.id.toString() === boatId?.toString()
+  );
 
   if (!boat) return <div>No data available</div>;
 
-  const tableData = boat.FuelVolume.map((entry, index) => ({
+  const tableData = boat?.fuelVolume.map((entry, index) => ({
     key: index,
-    date: entry.FocusDate,
-    in: entry.FuelRefuel,
-    out: entry.FuelDrain,
-    remain: entry.FuelRemaining,
+    date: formatDate(entry?.focusDate),
+    in: entry?.fuelRefuel,
+    out: entry?.fuelDrain,
+    remain: entry?.fuelRemaining,
   }));
 
   const columns = [
     {
-      title: 'วันที่',
-      dataIndex: 'date',
-      key: 'date',
-      width: '25%',
-      ...getColumnSearchProps('date'),
+      title: "วันที่",
+      dataIndex: "date",
+      key: "date",
+      width: "25%",
+      ...getColumnSearchProps("date"),
       sorter: (a, b) => new Date(a.date) - new Date(b.date),
-      sortDirections: ['descend', 'ascend'],
+      sortDirections: ["descend", "ascend"],
     },
     {
-      title: 'รับเข้า',
-      dataIndex: 'in',
-      key: 'in',
-      width: '20%',
-      ...getColumnSearchProps('in'),
+      title: "รับเข้า",
+      dataIndex: "in",
+      key: "in",
+      width: "20%",
+      ...getColumnSearchProps("in"),
       sorter: (a, b) => a.in - b.in,
     },
     {
-      title: 'จ่ายออก',
-      dataIndex: 'out',
-      key: 'out',
-      width: '20%',
-      ...getColumnSearchProps('out'),
+      title: "จ่ายออก",
+      dataIndex: "out",
+      key: "out",
+      width: "20%",
+      ...getColumnSearchProps("out"),
       sorter: (a, b) => a.out - b.out,
     },
     {
-      title: 'คงเหลือ',
-      dataIndex: 'remain',
-      key: 'remain',
-      width: '20%',
-      ...getColumnSearchProps('remain'),
+      title: "คงเหลือ",
+      dataIndex: "remain",
+      key: "remain",
+      width: "20%",
+      ...getColumnSearchProps("remain"),
       sorter: (a, b) => a.remain - b.remain,
     },
   ];
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-x-auto">
+    <div className="bg-white rounded-xl shadow overflow-x-auto">
       <Table
         className="custom-table"
         columns={columns}
