@@ -1,13 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import ApexCharts from "apexcharts";
-import fuelData from "../data/fuelData";
 import { formatDate } from "../utils/FormatDate";
 
-const BarChart = ({ boatId }) => {
+const BarChart = ({ boatId, boats }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    const selectedBoat = fuelData.find(
+    const selectedBoat = boats.find(
       (b) => b.id.toString() === boatId.toString()
     );
 

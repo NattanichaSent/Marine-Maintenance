@@ -2,10 +2,9 @@ import React, { useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table } from "antd";
 import Highlighter from "react-highlight-words";
-import fuelData from "../data/fuelData";
 import { formatDate } from "../utils/FormatDate";
 
-const FuelTable = ({ boatId }) => {
+const FuelTable = ({ boatId, boats }) => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
@@ -95,9 +94,7 @@ const FuelTable = ({ boatId }) => {
       ),
   });
 
-  const boat = fuelData.find(
-    (item) => item?.id.toString() === boatId?.toString()
-  );
+  const boat = boats.find((item) => item?.id.toString() === boatId?.toString());
 
   if (!boat) return <div>No data available</div>;
 
