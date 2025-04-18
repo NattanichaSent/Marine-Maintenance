@@ -1,271 +1,280 @@
 const fuelData = [
-    {
-        Id: 1,
-        Name: "SM1",
-        Capacity: 20000,
-        FuelVolume: [
-            {
-                Id: 1,
-                FocusDate: "2025-01-01",
-                FuelRefuel: 10,
-                FuelDrain: 5,
-                FuelRemaining: 15
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-01-02",
-                FuelRefuel: 20,
-                FuelDrain: 15,
-                FuelRemaining: 25
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-01-03",
-                FuelRefuel: 30,
-                FuelDrain: 10,
-                FuelRemaining: 35
-            }
-        ],
-        FuelActivity: [
-            {
-                Id: 1,
-                FocusDate: "2025-01-01",
-                ShipLoaded: 10,
-                ShipLight: 15,
-                ShipEmpty: 5,
-                ShipOthers: 7,
-                STDLight: 15,
-                STDLoaded: 10
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-01-02",
-                ShipLoaded: 20,
-                ShipLight: 25,
-                ShipEmpty: 15,
-                ShipOthers: 3,
-                STDLight: 25,
-                STDLoaded: 20
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-01-03",
-                ShipLoaded: 30,
-                ShipLight: 35,
-                ShipEmpty: 10,
-                ShipOthers: 12,
-                STDLight: 35,
-                STDLoaded: 30
-            }
-        ],
-        FuelConsumption: [
-            {
-                Id: 1,
-                FocusDate: "2025-01-01",
-                ShipLoaded: 10,
-                ShipLight: 15,
-                ShipEmpty: 5,
-                STDLight: 15,
-                STDLoaded: 10
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-01-02",
-                ShipLoaded: 20,
-                ShipLight: 25,
-                ShipEmpty: 15,
-                STDLight: 25,
-                STDLoaded: 20
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-01-03",
-                ShipLoaded: 30,
-                ShipLight: 35,
-                ShipEmpty: 10,
-                STDLight: 35,
-                STDLoaded: 30
-            }
-        ]
-    },
-    {
-        Id: 2,
-        Name: "SM2",
-        Capacity: 20000,
-        FuelVolume: [
-            {
-                Id: 1,
-                FocusDate: "2025-02-01",
-                FuelRefuel: 15,
-                FuelDrain: 5,
-                FuelRemaining: 10
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-02-02",
-                FuelRefuel: 25,
-                FuelDrain: 15,
-                FuelRemaining: 20
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-02-03",
-                FuelRefuel: 35,
-                FuelDrain: 10,
-                FuelRemaining: 30
-            }
-        ],
-        FuelActivity: [
-            {
-                Id: 1,
-                FocusDate: "2025-02-01",
-                ShipLoaded: 15,
-                ShipLight: 10,
-                ShipEmpty: 5,
-                ShipOthers: 7,
-                STDLight: 10,
-                STDLoaded: 15
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-02-02",
-                ShipLoaded: 25,
-                ShipLight: 20,
-                ShipEmpty: 15,
-                ShipOthers: 5,
-                STDLight: 20,
-                STDLoaded: 25
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-02-03",
-                ShipLoaded: 35,
-                ShipLight: 30,
-                ShipEmpty: 10,
-                ShipOthers: 3,
-                STDLight: 30,
-                STDLoaded: 35
-            }
-        ],
-        FuelConsumption: [
-            {
-                Id: 1,
-                FocusDate: "2025-02-01",
-                ShipLoaded: 15,
-                ShipLight: 10,
-                ShipEmpty: 5,
-                STDLight: 10,
-                STDLoaded: 15
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-02-02",
-                ShipLoaded: 25,
-                ShipLight: 20,
-                ShipEmpty: 15,
-                STDLight: 20,
-                STDLoaded: 25
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-02-03",
-                ShipLoaded: 35,
-                ShipLight: 30,
-                ShipEmpty: 10,
-                STDLight: 30,
-                STDLoaded: 35
-            }
-        ]
-    },
-    {
-        Id: 3,
-        Name: "SM3",
-        Capacity: 20000,
-        FuelVolume: [
-            {
-                Id: 1,
-                FocusDate: "2025-01-01",
-                FuelRefuel: 5,
-                FuelDrain: 10,
-                FuelRemaining: 15
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-01-02",
-                FuelRefuel: 15,
-                FuelDrain: 20,
-                FuelRemaining: 25
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-01-03",
-                FuelRefuel: 10,
-                FuelDrain: 30,
-                FuelRemaining: 35
-            }
-        ],
-        FuelActivity: [
-            {
-                Id: 1,
-                FocusDate: "2025-01-01",
-                ShipLoaded: 5,
-                ShipLight: 15,
-                ShipEmpty: 10,
-                ShipOthers: 3,
-                STDLight: 15,
-                STDLoaded: 5
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-01-02",
-                ShipLoaded: 15,
-                ShipLight: 25,
-                ShipEmpty: 20,
-                ShipOthers: 9,
-                STDLight: 25,
-                STDLoaded: 15
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-01-03",
-                ShipLoaded: 10,
-                ShipLight: 35,
-                ShipEmpty: 30,
-                ShipOthers: 5,
-                STDLight: 35,
-                STDLoaded: 10
-            }
-        ],
-        FuelConsumption: [
-            {
-                Id: 1,
-                FocusDate: "2025-01-01",
-                ShipLoaded: 5,
-                ShipLight: 15,
-                ShipEmpty: 10,
-                STDLight: 15,
-                STDLoaded: 5
-            },
-            {
-                Id: 2,
-                FocusDate: "2025-01-02",
-                ShipLoaded: 15,
-                ShipLight: 25,
-                ShipEmpty: 20,
-                STDLight: 25,
-                STDLoaded: 15
-            },
-            {
-                Id: 3,
-                FocusDate: "2025-01-03",
-                ShipLoaded: 10,
-                ShipLight: 35,
-                ShipEmpty: 30,
-                STDLight: 35,
-                STDLoaded: 10
-            }
-        ]
-    }
+  {
+    id: 1,
+    name: "SM1",
+    capacity: 9000,
+    fuelVolume: [
+      {
+        id: 1,
+        focusDate: "2025-01-01T00:00:00",
+        fuelRefuel: 10,
+        fuelDrain: 5,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 295,
+      },
+      {
+        id: 2,
+        focusDate: "2025-01-02T00:00:00",
+        fuelRefuel: 20,
+        fuelDrain: 15,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 295,
+      },
+      {
+        id: 3,
+        focusDate: "2025-01-03T00:00:00",
+        fuelRefuel: 30,
+        fuelDrain: 10,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 295,
+      },
+    ],
+    fuelActivity: [
+      {
+        id: 1,
+        focusDate: "2025-01-01T00:00:00",
+        shipLoaded: 10,
+        shipLight: 15,
+        shipEmpty: 5,
+        shipOther: 7,
+        stdLight: 15.0,
+        stdLoaded: 10.0,
+      },
+      {
+        id: 2,
+        focusDate: "2025-01-02T00:00:00",
+        shipLoaded: 20,
+        shipLight: 25,
+        shipEmpty: 15,
+        shipOther: 3,
+        stdLight: 25.0,
+        stdLoaded: 20.0,
+      },
+      {
+        id: 3,
+        focusDate: "2025-01-03T00:00:00",
+        shipLoaded: 30,
+        shipLight: 35,
+        shipEmpty: 10,
+        shipOther: 12,
+        stdLight: 35.0,
+        stdLoaded: 30.0,
+      },
+    ],
+    fuelConsumption: [
+      {
+        id: 1,
+        focusDate: "2025-01-01T00:00:00",
+        shipLoaded: 10,
+        shipLight: 15,
+        shipEmpty: 5,
+        shipOther: 12,
+      },
+      {
+        id: 2,
+        focusDate: "2025-01-02T00:00:00",
+        shipLoaded: 20,
+        shipLight: 25,
+        shipEmpty: 15,
+        shipOther: 12,
+      },
+      {
+        id: 3,
+        focusDate: "2025-01-03T00:00:00",
+        shipLoaded: 30,
+        shipLight: 35,
+        shipEmpty: 10,
+        shipOther: 12,
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "SM2",
+    capacity: 20000,
+    fuelVolume: [
+      {
+        id: 1,
+        focusDate: "2025-02-01T00:00:00",
+        fuelRefuel: 15,
+        fuelDrain: 5,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 10,
+      },
+      {
+        id: 2,
+        focusDate: "2025-02-02T00:00:00",
+        fuelRefuel: 25,
+        fuelDrain: 15,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 20,
+      },
+      {
+        id: 3,
+        focusDate: "2025-02-03T00:00:00",
+        fuelRefuel: 35,
+        fuelDrain: 10,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 30,
+      },
+    ],
+    fuelActivity: [
+      {
+        id: 1,
+        focusDate: "2025-02-01T00:00:00",
+        shipLoaded: 15,
+        shipLight: 10,
+        shipEmpty: 5,
+        shipOther: 7,
+        stdLight: 10.0,
+        stdLoaded: 15.0,
+      },
+      {
+        id: 2,
+        focusDate: "2025-02-02T00:00:00",
+        shipLoaded: 25,
+        shipLight: 20,
+        shipEmpty: 15,
+        shipOther: 5,
+        stdLight: 20.0,
+        stdLoaded: 25.0,
+      },
+      {
+        id: 3,
+        focusDate: "2025-02-03T00:00:00",
+        shipLoaded: 35,
+        shipLight: 30,
+        shipEmpty: 10,
+        shipOther: 3,
+        stdLight: 30.0,
+        stdLoaded: 35.0,
+      },
+    ],
+    fuelConsumption: [
+      {
+        id: 1,
+        focusDate: "2025-02-01T00:00:00",
+        shipLoaded: 15,
+        shipLight: 10,
+        shipEmpty: 5,
+        shipOther: 12,
+      },
+      {
+        id: 2,
+        focusDate: "2025-02-02T00:00:00",
+        shipLoaded: 25,
+        shipLight: 20,
+        shipEmpty: 15,
+        shipOther: 12,
+      },
+      {
+        id: 3,
+        focusDate: "2025-02-03T00:00:00",
+        shipLoaded: 35,
+        shipLight: 30,
+        shipEmpty: 10,
+        shipOther: 12,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "SM3",
+    capacity: 20000,
+    fuelVolume: [
+      {
+        id: 1,
+        focusDate: "2025-01-01T00:00:00",
+        fuelRefuel: 5,
+        fuelDrain: 10,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 15,
+      },
+      {
+        id: 2,
+        focusDate: "2025-01-02T00:00:00",
+        fuelRefuel: 15,
+        fuelDrain: 20,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 25,
+      },
+      {
+        id: 3,
+        focusDate: "2025-01-03T00:00:00",
+        fuelRefuel: 10,
+        fuelDrain: 30,
+        fuelUsage: 0,
+        fuelUsageScale: 0,
+        fuelRemaining: 35,
+      },
+    ],
+    fuelActivity: [
+      {
+        id: 1,
+        focusDate: "2025-01-01T00:00:00",
+        shipLoaded: 5,
+        shipLight: 15,
+        shipEmpty: 10,
+        shipOther: 3,
+        stdLight: 15.0,
+        stdLoaded: 5.0,
+      },
+      {
+        id: 2,
+        focusDate: "2025-01-02T00:00:00",
+        shipLoaded: 15,
+        shipLight: 25,
+        shipEmpty: 20,
+        shipOther: 9,
+        stdLight: 25.0,
+        stdLoaded: 15.0,
+      },
+      {
+        id: 3,
+        focusDate: "2025-01-03T00:00:00",
+        shipLoaded: 10,
+        shipLight: 35,
+        shipEmpty: 30,
+        shipOther: 5,
+        stdLight: 35.0,
+        stdLoaded: 10.0,
+      },
+    ],
+    fuelConsumption: [
+      {
+        id: 1,
+        focusDate: "2025-01-01T00:00:00",
+        shipLoaded: 5,
+        shipLight: 15,
+        shipEmpty: 10,
+        shipOther: 12,
+      },
+      {
+        id: 2,
+        focusDate: "2025-01-02T00:00:00",
+        shipLoaded: 15,
+        shipLight: 25,
+        shipEmpty: 20,
+        shipOther: 12,
+      },
+      {
+        id: 3,
+        focusDate: "2025-01-03T00:00:00",
+        shipLoaded: 10,
+        shipLight: 35,
+        shipEmpty: 30,
+        shipOther: 12,
+      },
+    ],
+  },
 ];
 
 export default fuelData;
