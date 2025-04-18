@@ -1,7 +1,11 @@
 import dayjs from "dayjs";
 
+export const formatMonthYear = (date) => {
+  return dayjs(date).format("YYYY-MM");
+};
+
 export const formatDate = (date) => {
-  return dayjs(date).format("DD-MM-YYYY");
+  return dayjs(date).format("DD-MM-YY");
 };
 
 export const formatDateDMY = (date) => {
